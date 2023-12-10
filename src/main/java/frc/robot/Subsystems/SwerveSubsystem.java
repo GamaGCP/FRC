@@ -17,11 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.ModuleConstants;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import frc.Lib.config.*;
 import frc.robot.Constants;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -81,7 +76,7 @@ public class SwerveSubsystem extends SubsystemBase {
         //Timer.delay(1);
     resetToAbsolute2();
 
-        SwerveDriveOdometry driveOdometry = 
+     this.driveOdometry = 
       new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getYaw(), getModulePositions());
 
       field = new Field2d();
@@ -142,6 +137,7 @@ public class SwerveSubsystem extends SubsystemBase {
         xSpeedEntry.setDouble(xSpeed);
         ySpeedEntry.setDouble(ySpeed);
         rotSpeedEntry.setDouble(rot);
+        gyroEntry.setDouble(getYaw().getDegrees());
             
       }
       public void setModuleStates(SwerveModuleState[] desiredStates) {
@@ -157,6 +153,16 @@ public class SwerveSubsystem extends SubsystemBase {
         for (SwerveModule mod : mSwerveMods){
             mod.resetDriveEncoders();
             mod.resetTurnEncoders();
+        }
+      }
+
+      public Rotation2d getRotation2d() {
+        return Rotation2d.fromDegrees(gyro.getYaw());
+    }
+
+      public void stopModules(){
+        for (SwerveModule mod : mSwerveMods){
+            mod.stop();
         }
       }
 

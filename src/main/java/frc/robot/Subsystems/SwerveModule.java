@@ -132,7 +132,7 @@ public class SwerveModule extends SubsystemBase {
         SmartDashboard.putNumber("SpeedMetersPerSecond", getDriveVelocity());
         SmartDashboard.putNumber("AbsoluteEncoderRad", getTurnPosition());
         SmartDashboard.putNumber("AbsoluteEncoderAngle", CANCoder.getAbsolutePosition());
-        SmartDashboard.putNumber("desiredState", desieredState.speedMetersPerSecond);
+        SmartDashboard.putNumber("desiredState", state.speedMetersPerSecond);
 
 
 
