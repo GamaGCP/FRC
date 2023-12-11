@@ -25,16 +25,16 @@ public class SwerveSubsystem extends SubsystemBase {
 
     //shuffleboard telementry
 
-    private GenericEntry xSpeedEntry =
-    swerveTab.add("Controler xSpeed", 0).getEntry();
+    private final GenericEntry xSpeedEntry =
+    swerveTab.add("XSpeed", 0).getEntry();
 
-    private GenericEntry ySpeedEntry =
-    swerveTab.add("Controler ySpeed", 0).getEntry();
+    private final GenericEntry ySpeedEntry =
+    swerveTab.add("YSpeed", 0).getEntry();
 
-    private GenericEntry rotSpeedEntry =
-    swerveTab.add("Controler rotSpeed", 0).getEntry();
-
-    /*private GenericEntry frontRightStateEntry =
+    private final GenericEntry rotSpeedEntry =
+    swerveTab.add("RotSpeed", 0).getEntry();
+/* 
+    private GenericEntry frontRightStateEntry =
     swerveTab.add("FR State V", 0).getEntry();
 
     private GenericEntry frontLefttStateEntry =
@@ -46,8 +46,8 @@ public class SwerveSubsystem extends SubsystemBase {
     private GenericEntry backLeftStateEntry =
     swerveTab.add("BL State V", 0).getEntry();*/
 
-    private GenericEntry gyroEntry =
-    swerveTab.add("Gyro Heading", 0).getEntry();
+   // private GenericEntry gyroEntry =
+    //swerveTab.add("Gyro Heading", 0).getEntry();
 
     private SwerveModule[] mSwerveMods;
 
@@ -67,10 +67,10 @@ public class SwerveSubsystem extends SubsystemBase {
     mSwerveMods =
         new SwerveModule[] 
         {
-          new SwerveModule(0, Constants.DriveConstants.Mod0.constants, modualTab.getLayout("Front Left Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0)),
-          new SwerveModule(1, Constants.DriveConstants.Mod1.constants, modualTab.getLayout("Back Right Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(2, 4)),
-          new SwerveModule(2, Constants.DriveConstants.Mod2.constants, modualTab.getLayout("Back Left Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(2, 0)),
-          new SwerveModule(3, Constants.DriveConstants.Mod3.constants, modualTab.getLayout("Front Right Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 4))
+          new SwerveModule(0, Constants.DriveConstants.mod0.constants, modualTab.getLayout("Front Left Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0)),
+          new SwerveModule(1, Constants.DriveConstants.mod1.constants, modualTab.getLayout("Back Right Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(2, 4)),
+          new SwerveModule(2, Constants.DriveConstants.mod2.constants, modualTab.getLayout("Back Left Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(2, 0)),
+          new SwerveModule(3, Constants.DriveConstants.mod3.constants, modualTab.getLayout("Front Right Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 4))
         };
 
         //Timer.delay(1);
@@ -116,7 +116,7 @@ public class SwerveSubsystem extends SubsystemBase {
         driveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
       }
 
-      //@SuppressWarnings("ParameterName")
+      @SuppressWarnings("ParameterName")
       public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative)
       {
         var swerveModuleStates = 
@@ -137,7 +137,7 @@ public class SwerveSubsystem extends SubsystemBase {
         xSpeedEntry.setDouble(xSpeed);
         ySpeedEntry.setDouble(ySpeed);
         rotSpeedEntry.setDouble(rot);
-        gyroEntry.setDouble(getYaw().getDegrees());
+        //gyroEntry.setDouble(getYaw().getDegrees());
             
       }
       public void setModuleStates(SwerveModuleState[] desiredStates) {

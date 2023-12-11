@@ -18,21 +18,21 @@ import frc.robot.Subsystems.SwerveSubsystem;
 
 public class RobotContainer {
 
-  private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
+  private final SwerveSubsystem s_Swerve = new SwerveSubsystem();
 
   
     XboxController driverJoystick = new XboxController(OIConstants.kDriverControllerPort);  // USE XI INPUT
     private final JoystickButton zeroGyro = new JoystickButton(driverJoystick, XboxController.Button.kA.value);
     private final JoystickButton robotCentric = new JoystickButton(driverJoystick, XboxController.Button.kLeftBumper.value);
 
-    private final SwerveSubsystem s_Swerve = new SwerveSubsystem();
+    
 
 
   public RobotContainer() {
 
     s_Swerve.setDefaultCommand(
             new TeleopSwerve(
-              swerveSubsystem,
+              s_Swerve,
               () -> driverJoystick.getLeftX(),
               () -> driverJoystick.getLeftY(),
               () -> driverJoystick.getRightX(),
@@ -44,7 +44,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-     zeroGyro.onTrue( new InstantCommand(() -> swerveSubsystem.zeroGyro()));
+     zeroGyro.onTrue( new InstantCommand(() -> s_Swerve.zeroGyro()));
   }
 
   public boolean  fieldCentric() {
