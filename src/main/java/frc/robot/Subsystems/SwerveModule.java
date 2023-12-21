@@ -38,7 +38,7 @@ public class SwerveModule extends SubsystemBase {
     private final PIDController drivePIDControler = new PIDController(ModuleConstants.kPDrive, ModuleConstants.kIDrive, ModuleConstants.kDDive);
 
     //feed Forward
-    private final SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(ModuleConstants.kSTurning, ModuleConstants.kVTurning, ModuleConstants.kATurning);
+    //private final SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(ModuleConstants.kSTurning, ModuleConstants.kVTurning, ModuleConstants.kATurning);
     private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(ModuleConstants.kSDrive, ModuleConstants.kVDrive, ModuleConstants.kADrive);
     
     
@@ -81,9 +81,6 @@ public class SwerveModule extends SubsystemBase {
         return new SwerveModulePosition(driveEncoder.getPosition(), new Rotation2d(getTurnPosition()));
     }
 
-    public double getDrivePosition() {
-        return driveEncoder.getPosition();
-    }
     public Rotation2d getCanCoder() {
         return Rotation2d.fromDegrees(CANCoder.getAbsolutePosition());
       }
@@ -93,22 +90,17 @@ public class SwerveModule extends SubsystemBase {
     }
 
     public void resetToAbsolute() {
-        double absolutePosition =  -getTurnPosition();//work on the ideal version of this so it boots up correctly
+        double absolutePosition =  -getTurnPosition();
         turnEncoder.setPosition(absolutePosition);
         driveEncoder.setPosition(0.0);
         SmartDashboard.putNumber("Reset Cancoder absolute position", absolutePosition);
         SmartDashboard.putNumber("Reset Cancoder value", getCanCoder().getDegrees());
+        
       }
 
     public double getDriveVelocity() {
         return driveEncoder.getVelocity();
     }
-
-    public double getTurnVelocity() {
-        return turnEncoder.getVelocity();
-    }
-
-    
 
     public void resetDriveEncoders() {
         driveEncoder.setPosition(0.0);
@@ -137,13 +129,11 @@ public class SwerveModule extends SubsystemBase {
 
 
         final double drivePID = drivePIDControler.calculate(getDriveVelocity(), state.speedMetersPerSecond);
-        final var turnPID = turningPIDControler.calculate(getTurnPosition(), state.angle.getRadians());
+        final var turnOutput = turningPIDControler.calculate(getTurnPosition(), state.angle.getRadians());
         final double driveFF = driveFeedForward.calculate(state.speedMetersPerSecond);
-        final var turnFF = turnFeedForward.calculate(turningPIDControler.getSetpoint().velocity);
         final double driveOutput = drivePID + driveFF;
-        final var turnOutput = turnPID + turnFF;
         driveMotor.setVoltage(driveOutput);
-        turnMotor.setVoltage(turnOutput);
+        turnMotor.set(turnOutput);
 
         SmartDashboard.putNumber("turnPID Setpoint Velocity", turningPIDControler.getSetpoint().velocity);
     SmartDashboard.putNumber("PID driveOutput", driveOutput);

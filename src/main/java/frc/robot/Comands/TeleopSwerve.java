@@ -59,7 +59,7 @@ public class TeleopSwerve extends CommandBase {
   
           // 4. Construct desired chassis speeds
           ChassisSpeeds chassisSpeeds;
-          if (!fieldOriented.get()) {
+          if (fieldOriented.get()) {
               // Relative to field
               chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
                       xSpeed, ySpeed, turningSpeed, swerveSubsystem.getRotation2d());

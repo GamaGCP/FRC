@@ -20,9 +20,9 @@ public class Constants {
 
         //Turning PID values
 
-        public static final double kPTurning = 0.01;//FIXME
-        public static final double kITurning = 0.0;
-        public static final double kDturning = 0.0;
+        public static final double kPTurning = 0.003;//FIXME
+        public static final double kITurning = 0.0000001;
+        public static final double kDturning = 0.0001;
 
         //Turning FeedForward Values
 
@@ -38,19 +38,14 @@ public class Constants {
 
         //Drive FeedForward Values
 
-        public static final double kSDrive = 0.0; //0.667 //Find using SysID
-        public static final double kVDrive = 0.0; //2.44
-        public static final double kADrive = 0.0; //0.27
+        public static final double kSDrive = 0.667; //0.667 //Find using SysID
+        public static final double kVDrive = 2.44; //2.44
+        public static final double kADrive = 0.27; //0.27
 
     }
     
     public static final class OIConstants {
         public static final int kDriverControllerPort = 0;
-        public static final int kDriverYAxis = 1;
-        public static final int kDriverXAxis = 0;
-        public static final int kDriverRotAxis = 4;
-        public static final int kDriverFieldOrientedButtonIdx = 1;
-
         public static final double kDeadband = 0.05;
       }
 
@@ -118,25 +113,6 @@ public class Constants {
             new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
           }
 
-        //turn motor directions
-
-        public static final boolean kFrontLeftTurnEncoderReversed = false;
-        public static final boolean kFrontRightTurnEncoderReversed = false;
-        public static final boolean kBackLeftTurnEncoderReversed = false;
-        public static final boolean kBackRightTurnEncoderReversed = false;
-
-        public static final boolean kFrontLeftTurnReversed = false;
-        public static final boolean kFrontRightTurnReversed = false;
-        public static final boolean kBackLeftTurnReversed = false;
-        public static final boolean kBackRightTurnReversed = false;
-
-        
-        //drive motor directions
-
-        public static final boolean kFrontLeftDriveReversed = false;
-        public static final boolean kFrontRightDriveReversed = false;
-        public static final boolean kBackLeftDriveReversed = false;
-        public static final boolean kBackRightDriveReversed = false;
 
         //physical max speeds
 
