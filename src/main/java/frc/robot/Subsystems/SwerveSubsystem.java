@@ -4,10 +4,12 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -19,9 +21,17 @@ import frc.robot.Constants;
 
 public class SwerveSubsystem extends SubsystemBase {
     private ShuffleboardTab modualTab = Shuffleboard.getTab("Modual Info");
+    private ShuffleboardTab swerveTab = Shuffleboard.getTab("SDS Swerve");
 
     //shuffleboard telementry
+    private GenericEntry xSpeedEntry =
+    swerveTab.add("Controler xSpeed", 0).getEntry();
 
+    private GenericEntry ySpeedEntry =
+    swerveTab.add("Controler ySpeed", 0).getEntry();
+
+    private GenericEntry rotSpeedEntry =
+    swerveTab.add("Controler rotSpeed", 0).getEntry();
     
 /* 
     private GenericEntry frontRightStateEntry =
@@ -106,7 +116,22 @@ public class SwerveSubsystem extends SubsystemBase {
         driveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
       }
 
-      
+      public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative)
+      {
+        var swerveModuleStates = 
+          DriveConstants.kDriveKinematics.toSwerveModuleStates(
+            fieldRelative
+              ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getYaw())
+              : new ChassisSpeeds(xSpeed, ySpeed, rot));
+        setModuleStates(swerveModuleStates);
+    
+        // Telemetry
+        xSpeedEntry.setDouble(xSpeed);
+        ySpeedEntry.setDouble(ySpeed);
+        rotSpeedEntry.setDouble(rot);
+            
+      }
+
       public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(
           desiredStates, DriveConstants.kPhysicalMaxSpeedMeterPerSecond);

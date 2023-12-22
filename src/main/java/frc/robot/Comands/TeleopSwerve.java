@@ -3,8 +3,6 @@ package frc.robot.Comands;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
@@ -17,6 +15,7 @@ public class TeleopSwerve extends CommandBase {
     private final Supplier<Double> xSpdFunction, ySpdFunction, turningSpdFunction;
     private final Supplier<Boolean> fieldOriented;
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
+    private boolean isFieldOriented = false;
   
     public TeleopSwerve(
     SwerveSubsystem swerveSubsystem,
@@ -57,23 +56,9 @@ public class TeleopSwerve extends CommandBase {
           turningSpeed = turningLimiter.calculate(turningSpeed)
                   * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
   
+                 isFieldOriented = !fieldOriented.get();
           // 4. Construct desired chassis speeds
-          ChassisSpeeds chassisSpeeds;
-          if (fieldOriented.get()) {
-              // Relative to field
-              chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                      xSpeed, ySpeed, turningSpeed, swerveSubsystem.getRotation2d());
-          } else {
-              // Relative to robot
-              chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
-          }
-  
-          // 5. Convert chassis speeds to individual module states
-          SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-  
-          // 6. Output each module states to wheels
-          swerveSubsystem.setModuleStates(moduleStates);
-
+          swerveSubsystem.drive(xSpeed, ySpeed, turningSpeed,isFieldOriented);
           // 7. Telemetry
           SmartDashboard.putNumber("xComponent", xSpeed);
           SmartDashboard.putNumber("yComponent", ySpeed);
